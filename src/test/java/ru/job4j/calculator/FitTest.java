@@ -6,18 +6,34 @@ import org.junit.jupiter.api.Test;
 class FitTest {
 
     @Test
-    void whenMan180Then92() {
-        short input = 180;
-        double expected = 92;
-        double output = Fit.manWeight(input);
-        assertThat(output).isEqualTo(expected, withPrecision(0.01));
+    void whenManHeight187ThenWeight99Dot55() {
+        int height = 187;
+        double expected = 100.05;
+        double actual = Fit.calculateWeight(height, true);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
-    void whenWoman170Then69() {
-        short input = 170;
-        double expected = 69;
-        double output = Fit.womanWeight(input);
-        assertThat(output).isEqualTo(expected, withPrecision(0.01));
+    void whenWomanHeight170ThenWeight69Dot0() {
+        int height = 170;
+        double expected = 69.0;
+        double actual = Fit.calculateWeight(height, false);
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @Test
+    void whenHeightIsNegativeThenThrowException() {
+        int height = -150;
+        assertThatThrownBy(() -> Fit.calculateWeight(height, true))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Height must be greater than 0");
+    }
+
+    @Test
+    void whenHeightIsZeroThenThrowException() {
+        int height = 0;
+        assertThatThrownBy(() -> Fit.calculateWeight(height, true))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Height must be greater than 0");
     }
 }
